@@ -96,7 +96,7 @@ function MultiSelect() {
   return (
     <>
       <SelectedCharacters />
-      <FilteredCharacters />
+      {modal && <FilteredCharacters />}
     </>
   );
 }

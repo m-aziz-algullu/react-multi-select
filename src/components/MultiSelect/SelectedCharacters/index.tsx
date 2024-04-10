@@ -1,7 +1,10 @@
 import Image from "next/image";
 import useMemoizedSelectedCharacters from "@/lib/hooks/characters/useMemoizedSelectedCharacters";
 import { useAppDispatch } from "@/lib/hooks/useApp";
-import { toggleCharacter } from "@/redux/characters/charactersSlice";
+import {
+  toggleCharacter,
+  toggleModal,
+} from "@/redux/characters/charactersSlice";
 import { CharacterPicked } from "@/types/character";
 import SearchInput from "./SearchInput";
 import arrowDown from "../../../../public/images/arrow-toggle-down.svg";
@@ -12,10 +15,6 @@ function SelectedCharacters() {
   const { selectedCharactersContainerRef } = useNavigation();
 
   const [memoizedSelectedCharacters] = useMemoizedSelectedCharacters();
-
-  function handleClick(id: string) {
-    dispatch(toggleCharacter({ id, selected: false }));
-  }
 
   return (
     <div
@@ -28,7 +27,7 @@ function SelectedCharacters() {
             {character.name}
             <button
               className="selected-character-delete-button"
-              onClick={() => handleClick(character.id)}
+              onClick={() => dispatch(toggleCharacter({ id: character.id }))}
             >
               X
             </button>
@@ -38,7 +37,10 @@ function SelectedCharacters() {
 
       <SearchInput />
 
-      <div onClick={handleClick} className="selected-character-down-arrow">
+      <div
+        onClick={() => dispatch(toggleModal(null))}
+        className="selected-character-down-arrow"
+      >
         <Image src={arrowDown} alt="toggle" width={20} height={20} />
       </div>
     </div>

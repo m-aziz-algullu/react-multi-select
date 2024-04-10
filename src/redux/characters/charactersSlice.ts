@@ -16,7 +16,7 @@ interface CharactersState {
 
 const initialState: CharactersState = {
   filter: "",
-  modal: false,
+  modal: true,
   filteredCharacters: [],
   selectedCharacters: [],
   focusedCharacter: null,
@@ -38,7 +38,9 @@ export const charactersSlice = createSlice({
       state.focusedCharacter = character;
     },
     toggleModal: (state, action) => {
-      if (state.filteredCharacters.length > 0) state.modal = action.payload;
+      if (state.filteredCharacters.length > 0) {
+        state.modal = !state.modal;
+      }
     },
     selectCharacter(state, action) {
       const character = action.payload;
@@ -98,7 +100,7 @@ export const charactersSlice = createSlice({
       })
       .addCase(getCharactersByInputAsync.rejected, (state, action) => {
         state.status = Status.Failed;
-        
+
         if (action.payload?.error.name == ErrorType.NotFound) {
           state.error = UIErrorMessage.NotFound;
           state.filteredCharacters = [];
